@@ -4,10 +4,17 @@ let lastId = 0;
 
 const slice  = createSlice({
     name:'products',
-    initialState: [],
+    initialState:{
+        allProducts :[],
+        cartProducts:[]
+    },
     reducers:{
-        productsAdded : (products,action) =>{
-            products.push({
+        allProductsAdded: (products,action) =>{
+          products.allProducts = action.payload
+          console.log("this is action",action.payload)
+        },
+        productsAddedtoCart : (products,action) =>{
+            products.cartProducts.push({
                 id : ++lastId,
                 description:action.payload.description
             })
@@ -18,7 +25,7 @@ const slice  = createSlice({
     }
 })
 
-export const {productsAdded,productsRemoved} = slice.actions;
+export const {productsAddedtoCart,productsRemoved,allProductsAdded} = slice.actions;
 export default slice.reducer;
 
 // export default products;
