@@ -6,7 +6,9 @@ const slice  = createSlice({
     name:'products',
     initialState:{
         allProducts :[],
-        cartProducts:[]
+        cartProducts:[],
+        cartProductsId:[]
+
     },
     reducers:{
         allProductsAdded: (products,action) =>{
@@ -14,18 +16,33 @@ const slice  = createSlice({
           console.log("this is action",action.payload)
         },
         productsAddedtoCart : (products,action) =>{
-            products.cartProducts.push({
-                id : ++lastId,
-                description:action.payload.description
-            })
+            const existProductIndex = products.cartProductsId.indexOf(action.payload.id)
+            console.log(existProductIndex)
+            if(existProductIndex === -1){
+                products.cartProductsId.push(action.payload.id)
+                const newProduct = {...action.payload,quantity:1};
+                products.cartProducts.push(newProduct)
+            } else{
+                products.cartProducts[existProductIndex].quantity ++;
+            }
+        },
+        productQuantityIncrement :(products,action)=>{
+            const existProductIndex = products.cartProductsId.indexOf(action.payload)
+            products.cartProducts[existProductIndex].quantity ++;
+        },
+        productQuantityDecrement :(products,action)=>{
+            const existProductIndex = products.cartProductsId.indexOf(action.payload)
+            products.cartProducts[existProductIndex].quantity >0 && products.cartProducts[existProductIndex].quantity --;
         },
         productsRemoved : (products,action) =>{
-
+            products.cartProducts = products.cartProducts.filter(product=>product.id !== action.payload)
+            products.cartProductsId = products.cartProductsId.filter(id=>id !== action.payload)
+            // console.log(a)
         }
     }
 })
 
-export const {productsAddedtoCart,productsRemoved,allProductsAdded} = slice.actions;
+export const {productsAddedtoCart,productsRemoved,allProductsAdded,productQuantityIncrement,productQuantityDecrement} = slice.actions;
 export default slice.reducer;
 
 // export default products;
