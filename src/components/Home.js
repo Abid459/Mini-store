@@ -12,20 +12,19 @@ const Home = () => {
     const dispatch  = useDispatch()
     // dispatch({type:'productsAdded' , description:"two"})
     const products = useSelector((state) => state.allProducts)
-    console.log("this is our products", products)
+
 
     
     useEffect(()=>{
          (async() =>{
-            const data =await axios('https://fakestoreapi.com/products')
-            console.log("this is products",data.data)
+            const data =await axios('./products.json')
             dispatch(allProductsAdded(data.data))
         })();
         
     },[])
-    // console.log('this is dispatch',dispatch)
+
     return (
-        <div className='p-10 bg-black pt-20'>
+        <div className='px-10'>
             <Products products={products}></Products>
         </div>
     );

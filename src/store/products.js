@@ -13,11 +13,9 @@ const slice  = createSlice({
     reducers:{
         allProductsAdded: (products,action) =>{
           products.allProducts = action.payload
-          console.log("this is action",action.payload)
         },
         productsAddedtoCart : (products,action) =>{
             const existProductIndex = products.cartProductsId.indexOf(action.payload.id)
-            console.log(existProductIndex)
             if(existProductIndex === -1){
                 products.cartProductsId.push(action.payload.id)
                 const newProduct = {...action.payload,quantity:1};
@@ -37,7 +35,6 @@ const slice  = createSlice({
         productsRemoved : (products,action) =>{
             products.cartProducts = products.cartProducts.filter(product=>product.id !== action.payload)
             products.cartProductsId = products.cartProductsId.filter(id=>id !== action.payload)
-            // console.log(a)
         }
     }
 })
